@@ -52,4 +52,28 @@ FROM Warehouse.StockItems
 WHERE UnitPrice > (SELECT AVG(UnitPrice) FROM Warehouse.StockItems);
 
 -- Aufgabe 2
+SELECT C.CustomerID, CustomerName, O.OrderDate, COUNT(O.OrderID) AS AnzahlBestellungen
+  FROM Sales.Customers AS C
+  JOIN Sales.Orders AS O ON C.CustomerID = O.CustomerID
+  GROUP BY C.CustomerID, CustomerName, O.OrderDate
+  HAVING COUNT(O.OrderID) > 4
 
+  -- Aufgabe 3
+  SELECT * FROM Warehouse.StockItems 
+WHERE StockItemID IN (
+    SELECT StockItemID
+    FROM Sales.OrderLines
+    GROUP BY StockItemID
+    HAVING SUM(Quantity) > 50000
+)
+
+-- Aufgabe 1
+SELECT FullName FROM Application.People
+INTERSECT
+SELECT CustomerName FROM  Sales.Customers;
+
+SELECT CustomerName FROM Sales.Customers
+EXCEPT
+SELECT FullName FROM Application.People;
+
+-- Aufgabe 2
